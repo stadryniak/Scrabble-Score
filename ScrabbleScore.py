@@ -1,33 +1,35 @@
 def wczytaj_slownik():
+    '''Wczytanie słownika'''
+    print ('Inicjalizacja słownika...')
     slownik=[]
-    with open("slowa.txt") as f:
-        data = f.readlines()
-    for line in data:
-        slownik.append(line)
+    with open("slowa.txt", 'r', encoding='utf-8') as f:
+        slownik=f.readlines()
+    slownik=[x.strip() for x in slownik]
+    print('Słownik gotowy')
     return slownik
 
 def wprowadz_slowo():
-    slowo=input('Podaj slowo do sprawdzenia lub 0 aby wyjść: ')
+    slowo=input('Podaj slowo do sprawdzenia: ')
     return slowo
 
 def wybor():
     print ('Wybierz co chcesz zrobić')
     print ('[1] Sprawdzić czy istnieje')
-    wybor=input('Decyzja: ')
-    return int(wybor)
+    print ('[0] Wyjście')
+    try:
+        wybor=input('Decyzja: ')
+        return int(wybor)
+    except ValueError:
+        print ('Nieprawidłowy wybór!')
+    return None
 
 slownik=wczytaj_slownik()
-a='a'
-print ('NIE DZIAŁAJĄ POLSKIE ZNAKI')
-if a!=0:
-    a=wprowadz_slowo()
-    wybor=wybor()
-    if wybor==1:
-        flag=0
-        for i in slownik:
-            if a==i:
-                flag=1
-        if flag==1:
+wyb=-1
+while wyb!=0:
+    sprawdz=wprowadz_slowo()
+    wyb=wybor()
+    if wyb==1:
+        if sprawdz in slownik: 
             print ('Slowo istnieje')
         else:
             print ('Słowo nie istnieje')
