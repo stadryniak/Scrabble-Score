@@ -22,7 +22,6 @@ def wybor():
     print('[2] Oblicz punkty za słowo')
     print('[3] Sprawdź i oblicz')
     print('[0] Wyjście')
-    print('')
     try:
         wybor=int(input('Wybór: '))
         print('')
@@ -58,12 +57,46 @@ def premia_literowa(slowo,pkt,litery):
         return pkt
     lit=[]
     for i in range(0,ile):
+        try:
+            mnoznik=int(input('Podaj mnożnik dla podanej litery: '))
+            if mnoznik!=2 and mnoznik!=3:
+                print('Nieprawidłowy wybór, premia nie naliczona')
+                print('')
+                return pkt
+        except ValueError:
+            print('')
+            print ('Nieprawidłowy wybór, premia nie naliczona')
+            print('')
+            return pkt
         lit.append(input('Podaj literę '+str(i+1)+' : '))
         if lit[i] in slowo:
-            pkt+=litery[lit[i]]
+            if mnoznik==2:
+                pkt+=litery[lit[i]]
+            elif mnoznik==3:
+                pkt+=litery[lit[i]]*2
         else:
             print('Brak takiej litery w słowie')
     return pkt
+
+def premia_slowna(pkt):
+    try:
+        mnoznik=int(input('Mnożnik premii słownej: '))
+        print('')
+        if mnoznik!=2 and mnoznik!=3:
+            print('Nieprawidłowy wybór, premia nia naliczona')
+            print('')
+            return pkt
+    except ValueError:
+        print('')
+        print ('Nieprawidłowy wybór, premia nie naliczona')
+        print('')
+        return pkt
+    if mnoznik==2:
+        pkt*=2
+        return pkt
+    elif mnoznik==3:
+        pkt*=3
+        return pkt
 
 def punkty(slowo):
     '''Oblicza punkty za słowo i premie'''
@@ -98,11 +131,10 @@ def punkty(slowo):
     if t==1:
         pkt=premia_literowa(slowo,pkt,litery)
     if t==2:
-        pkt=pkt*2
-        return pkt
+        pkt=premia_slowna(pkt)
     if t==3:
         pkt=premia_literowa(slowo,pkt,litery)
-        pkt=pkt*2
+        pkt=premia_slowna(pkt)
         return pkt
         
     return pkt
@@ -124,7 +156,7 @@ while wyb!=0:
         if istnieje(sprawdz)=='Słowo istnieje':
             print('Słowo istnieje')
             print('')
-            print(punkty(sprawdz))
+            print('Wartość punktowa słowa '+str(punkty(sprawdz)))
         else:
             print('Słowo nie istnieje')
             print('')
