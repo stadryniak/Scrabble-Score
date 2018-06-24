@@ -119,7 +119,7 @@ def punkty(slowo):
     try:
         t=int(input('Premia: '))
         print('')
-        if t<0:
+        if t<0 and t>3:
             print('Nieprawidłowy wybór, premia nia naliczona')
             print('')
             return pkt
@@ -132,11 +132,11 @@ def punkty(slowo):
         pkt=premia_literowa(slowo,pkt,litery)
     if t==2:
         pkt=premia_slowna(pkt)
+        print('')
     if t==3:
         pkt=premia_literowa(slowo,pkt,litery)
         pkt=premia_slowna(pkt)
         return pkt
-        
     return pkt
 
 slownik=wczytaj_slownik()
