@@ -11,7 +11,7 @@ def load_words_dictionary():
 
 def word_imput():
     '''Wczytanie słowa od użytkownika'''
-    word=input('Podaj słowo do wordenia lub 0, aby zakończyć: ')
+    word=input('Podaj słowo do sprawdzenia lub 0, aby zakończyć: ')
     word=word.lower()
     print('')
     return word
@@ -22,11 +22,12 @@ def decision():
     print('[1] Sprawdź czy istnieje')
     print('[2] Oblicz punkty za słowo')
     print('[3] Sprawdź i oblicz')
+    print('[4] Wyświetl losowe słowo')
     print('[0] Wyjście')
     try:
         decision=int(input('Wybór: '))
         print('')
-        if decision>3 or decision<0: #zmienić w przypadku dodania funkcji
+        if decision>4 or decision<0: #zmienić w przypadku dodania funkcji
             print('Nieprawidłowy wybór')
             print('')
             return None
@@ -140,6 +141,8 @@ def punkty(word):
         return pkt
     return pkt
 
+
+import random
 words_dictionary=load_words_dictionary()
 wyb=-1
 while wyb!=0:
@@ -150,10 +153,10 @@ while wyb!=0:
     if wyb==1:
         print(exist(word))
         print('')
-    if wyb==2:
+    elif wyb==2:
         print('Wartość punktowa słowa: '+str(punkty(word)))
         print('')
-    if wyb==3:
+    elif wyb==3:
         if exist(word)=='Słowo istnieje':
             print('Słowo istnieje')
             print('')
@@ -162,6 +165,8 @@ while wyb!=0:
         else:
             print('Słowo nie istnieje')
             print('')
-print('Koniec pracy')
-
-    
+    elif wyb==4:
+        i=random.randint(0,len(words_dictionary))
+        print (words_dictionary[i])
+        print('')
+print('Koniec pracy')   
