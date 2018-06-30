@@ -1,52 +1,54 @@
-def wczytaj_slownik():
+def load_words_dictionary():
     '''Wczytanie słownika'''
+    print('Słownik pochodzi ze strony www.sjp.pl')
     print('Inicjalizacja słownika...')
     with open("slowa.txt", 'r', encoding='utf-8') as f:
-        slownik=f.readlines()
-    slownik=[x.strip() for x in slownik]
+        words_dictionary=f.readlines()
+    words_dictionary=[x.strip() for x in words_dictionary]
     print('Słownik gotowy')
     print('')
-    return slownik
+    return words_dictionary
 
-def wprowadz_slowo():
+def word_imput():
     '''Wczytanie słowa od użytkownika'''
-    slowo=input('Podaj słowo do sprawdzenia lub 0, aby zakończyć: ')
-    slowo=slowo.lower()
+    word=input('Podaj słowo do sprawdzenia lub 0, aby zakończyć: ')
+    word=word.lower()
     print('')
-    return slowo
+    return word
 
-def wybor():
+def decision():
     '''Odpowiada za wybór funkcji programu'''
     print('Wybierz, co chcesz zrobić')
     print('[1] Sprawdź czy istnieje')
     print('[2] Oblicz punkty za słowo')
     print('[3] Sprawdź i oblicz')
+    print('[4] Wyświetl losowe słowo')
     print('[0] Wyjście')
     try:
-        wybor=int(input('Wybór: '))
+        decision=int(input('Wybór: '))
         print('')
-        if wybor>3 or wybor<0: #zmienić w przypadku dodania funkcji
+        if decision>4 or decision<0: #zmienić w przypadku dodania funkcji
             print('Nieprawidłowy wybór')
             print('')
             return None
-        return wybor
+        return decision
     except ValueError:
         print('')
         print ('Nieprawidłowy wybór')
         print('')
         return None
 
-def istnieje(slowo):
-    if sprawdz in slownik: 
+def exist(word):
+    if word in words_dictionary: 
         return 'Słowo istnieje'
     else:
         return'Słowo nie istnieje'
 
-def premia_literowa(slowo,pkt,litery):
+def letter_prem(word,pkt,letters):
     try:
-        ile=int(input('Liczba premii literowych: '))
+        how_many=int(input('Liczba premii literowych: '))
         print('')
-        if ile<0:
+        if how_many<0:
             print('Nieprawidłowy wybór, premia nia naliczona')
             print('')
             return pkt
@@ -56,10 +58,10 @@ def premia_literowa(slowo,pkt,litery):
         print('')
         return pkt
     lit=[]
-    for i in range(0,ile):
+    for i in range(how_many):
         try:
-            mnoznik=int(input('Podaj mnożnik dla podanej litery: '))
-            if mnoznik!=2 and mnoznik!=3:
+            multipler=int(input('Podaj mnożnik dla podanej letters: '))
+            if multipler!=2 and multipler!=3:
                 print('Nieprawidłowy wybór, premia nie naliczona')
                 print('')
                 return pkt
@@ -69,20 +71,20 @@ def premia_literowa(slowo,pkt,litery):
             print('')
             return pkt
         lit.append(input('Podaj literę '+str(i+1)+' : '))
-        if lit[i] in slowo:
-            if mnoznik==2:
-                pkt+=litery[lit[i]]
-            elif mnoznik==3:
-                pkt+=litery[lit[i]]*2
+        if lit[i] in word:
+            if multipler==2:
+                pkt+=letters[lit[i]]
+            elif multipler==3:
+                pkt+=letters[lit[i]]*2
         else:
-            print('Brak takiej litery w słowie')
+            print('Brak takiej letters w słowie')
     return pkt
 
-def premia_slowna(pkt):
+def word_prem(pkt):
     try:
-        mnoznik=int(input('Mnożnik premii słownej: '))
+        multipler=int(input('Mnożnik premii słownej: '))
         print('')
-        if mnoznik!=2 and mnoznik!=3:
+        if multipler!=2 and multipler!=3:
             print('Nieprawidłowy wybór, premia nia naliczona')
             print('')
             return pkt
@@ -91,16 +93,16 @@ def premia_slowna(pkt):
         print ('Nieprawidłowy wybór, premia nie naliczona')
         print('')
         return pkt
-    if mnoznik==2:
+    if multipler==2:
         pkt*=2
         return pkt
-    elif mnoznik==3:
+    elif multipler==3:
         pkt*=3
         return pkt
 
-def punkty(slowo):
+def punkty(word):
     '''Oblicza punkty za słowo i premie'''
-    litery={'a':1, 'ą':5, 'b':3, 'c':2,
+    letters={'a':1, 'ą':5, 'b':3, 'c':2,
             'ć':6, 'd':2, 'e':1, 'ę':5,
             'f':5, 'g':3, 'h':3, 'i':1,
             'j':3, 'k':2, 'l':2, 'ł':3,
@@ -110,8 +112,8 @@ def punkty(slowo):
             'y':2, 'z':1, 'ź':9, 'ż':5}
     
     pkt=0
-    for litera in slowo:
-        pkt+=litery[litera]
+    for litera in word:
+        pkt+=letters[litera]
     print('[1] Premia literowa')
     print('[2] Premia słowna')
     print('[3] Premia literowa i słowna')
@@ -129,37 +131,42 @@ def punkty(slowo):
         print('')
         return pkt
     if t==1:
-        pkt=premia_literowa(slowo,pkt,litery)
+        pkt=letter_prem(word,pkt,letters)
     if t==2:
-        pkt=premia_slowna(pkt)
+        pkt=word_prem(pkt)
         print('')
     if t==3:
-        pkt=premia_literowa(slowo,pkt,litery)
-        pkt=premia_slowna(pkt)
+        pkt=letter_prem(word,pkt,letters)
+        pkt=word_prem(pkt)
         return pkt
     return pkt
 
-slownik=wczytaj_slownik()
+
+import random
+words_dictionary=load_words_dictionary()
 wyb=-1
 while wyb!=0:
-    sprawdz=wprowadz_slowo()
-    if sprawdz=='0':
+    word=word_imput()
+    if word=='0':
         break
-    wyb=wybor()
+    wyb=decision()
     if wyb==1:
-        print(istnieje(sprawdz))
+        print(exist(word))
         print('')
-    if wyb==2:
-        print(punkty(sprawdz))
+    elif wyb==2:
+        print('Wartość punktowa słowa: '+str(punkty(word)))
         print('')
-    if wyb==3:
-        if istnieje(sprawdz)=='Słowo istnieje':
+    elif wyb==3:
+        if exist(word)=='Słowo istnieje':
             print('Słowo istnieje')
             print('')
-            print('Wartość punktowa słowa '+str(punkty(sprawdz)))
+            print('Wartość punktowa słowa: '+str(punkty(word)))
+            print('')
         else:
             print('Słowo nie istnieje')
             print('')
-print('Koniec pracy')
-
-    
+    elif wyb==4:
+        i=random.randint(0,len(words_dictionary))
+        print (words_dictionary[i])
+        print('')
+print('Koniec pracy')   
